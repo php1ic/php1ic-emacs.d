@@ -1,0 +1,636 @@
+* Appearance
+** General Setting
+#+BEGIN_SRC emacs-lisp
+  (set-frame-font "DejaVu Sans Mono 7")
+
+  ;; Don't change the font for sub/superscript in latex
+  (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore))
+
+  ;;Use spaces for indenting, not tabs
+  (setq-default indent-tabs-mode nil)
+
+  ;; searches case sensitive by default
+  (setq case-fold-search nil)
+
+  ;; Always end a file with a newline
+  (setq require-final-newline t)
+
+  ;; Column numbers in mode line
+  (column-number-mode t)
+
+  ;; Remove toolbar
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  ;; Show line numbers
+  ;;(global-linum-mode 0)
+  ;; version 26 provided this built-in
+  (global-display-line-numbers-mode)
+
+  ;; Highlight current line
+  (global-hl-line-mode 1)
+  ;; To customize the background color
+  ;;(set-face-background 'hl-line "#330")
+
+  ;; Highlight the current region
+  (transient-mark-mode 1)
+
+  ;; Highlight matching parens
+  (show-paren-mode 1)
+
+  ;; Move forwards by single words if string is CamelCase
+  (global-subword-mode 1)
+
+  ;; Display the time in the mode bar
+  (setq display-time-day-and-date t
+        display-time-24hr-format t)
+  (display-time)
+
+  ;; Scroll line by line not page/screen at a time
+  (setq scroll-step           1
+        scroll-conservatively 100)
+
+  ;; Don't add newlines to end of buffer when scrolling
+  (setq next-line-add-newlines nil)
+
+  ;; Show the battery charge level
+  ;; TODO: check if there is a battery before displaying it's charge level
+  (display-battery-mode 1)
+#+END_SRC
+
+** Dashboard
+We are using the dashboard package so stop the default startup screen.
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    ;; Not sure if this location is guaranteed to exist
+    (setq dashboard-startup-banner "/usr/share/icons/hicolor/128x128/apps/emacs.png")
+    (setq dashboard-items '(
+                            (recents  . 5)
+                            (projects . 5)
+                            )
+          )
+    (setq dashboard-banner-logo-title "Welcome to emacs! Enjoy Making Awesomely Creative Stuff")
+    )
+#+END_SRC
+
+** Solarized
+Not much to say here, use the solarized dark theme.
+#+BEGIN_SRC emacs-lisp
+  (use-package solarized-theme
+    :ensure t
+    :config
+    (load-theme 'solarized-dark t)
+    )
+#+END_SRC
+
+** ibuffer
+Better default buffer for open buffers.
+#+BEGIN_SRC emacs-lisp
+  (defalias 'list-buffers 'ibuffer)
+#+END_SRC
+
+** Spell checker and dictionary
+Set aspell as the checker and make sure it uses british english.
+#+BEGIN_SRC emacs-lisp
+  (setq ispell-program-name "aspell")
+
+  (setq ispell-dictionary "british")
+#+END_SRC
+
+** Change the mode line
+The default mode line is a bit compact, use this to spread it out.
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (setq sml/no-confirm-load-theme t)
+    (setq sml/theme 'respectful)
+    (sml/setup)
+    )
+#+END_SRC
+
+** Custom frame title
+Add the current file/buffer and project name to the title, if we are in a project.
+#+BEGIN_SRC emacs-lisp
+  (setq frame-title-format
+        '("emacs - "
+          "%b"
+          (:eval
+           (let ((project-name (projectile-project-name)))
+             (unless (string= "-" project-name)
+               (format " in [%s]" project-name))
+             )
+           )
+          )
+        )
+#+END_SRC
+* Additional Modes
+** Company
+Set up company as the back end for IDE like completion.
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :diminish
+    :config
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 1)
+    ;;:hook
+    ;;(c++-mode . company-mode)
+    ;;(c-mode . company-mode)
+    (global-company-mode t)
+    )
+
+  (use-package company-c-headers
+    :ensure t
+    )
+
+  (use-package company-irony
+    :ensure t
+    :config
+    (setq company-backends '((company-c-headers
+                              company-dabbrev-code
+                              company-irony))
+          )
+    )
+
+  (use-package irony-eldoc
+    :ensure t
+    :config
+    (add-hook 'irony-mode-hook #'irony-eldoc)
+    )
+
+  (use-package company-jedi
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'jedi:setup)
+    )
+
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi)
+    )
+
+  (add-hook 'python-mode-hook 'my/python-mode-hook)
+#+END_SRC
+
+** Ido
+Enable ido mode for better buffer opening.
+#+BEGIN_SRC emacs-lisp
+  (use-package flx-ido
+    :ensure t
+    :init
+    (flx-ido-mode 1)
+    )
+  ;;(flx-ido-mode 1)
+
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil)
+  (setq ido-create-new-buffer 'always)
+
+  (use-package ido-vertical-mode
+    :ensure t
+    :config
+    (ido-vertical-mode)
+    )
+
+  (use-package ido-completing-read+
+    :ensure t
+    :config
+    (ido-ubiquitous-mode)
+    )
+#+END_SRC
+
+** Irony
+Front end for code completion.
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+    :ensure t
+    :diminish
+    :config
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+    )
+#+END_SRC
+
+** Yaml
+Wasn't installed.
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :ensure t
+    :mode ("\\.yml" . yaml-mode)
+    )
+#+END_SRC
+
+** Markdown
+Wasn't installed.
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+      :ensure t
+      :mode ("\\.md" . markdown-mode)
+      )
+#+END_SRC
+
+** Modes for specific file extensions
+Creating combined tex/eps figures with xfig outputs files with non-standard extensions, make sure they are highlighted appropriately
+#+BEGIN_SRC emacs-lisp
+  (setq auto-mode-alist
+        (append '(
+                  ("\\.pstex_t$" . latex-mode)
+                  ("\\.pstex$" . ps-mode)
+                  )
+                auto-mode-alist)
+        )
+#+END_SRC
+* Functions & Custom shortcuts
+** Follow a split : C-x 2/3
+In vanilla emacs, if you split a window, you remain the original frame.
+Change this behaviour so you follow the split into the new frame.
+#+BEGIN_SRC emacs-lisp
+  (defun split-and-follow-horizontally ()
+    "Move into the new window that is created."
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1)
+    )
+  (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+
+  (defun split-and-follow-vertically ()
+    "Move into the new window that is created."
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1)
+    )
+  (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+#+END_SRC
+
+** Copy Entire line : M-k
+Copy the entire current line, irrelevant of horizontal position.
+#+BEGIN_SRC emacs-lisp
+  (defun copy-whole-line ()
+    "Copies a line without regard for cursor position."
+    (interactive)
+    (save-excursion
+      (kill-new
+       (buffer-substring
+        (point-at-bol)
+        (point-at-eol)
+        )
+       )
+      )
+    )
+
+  (global-set-key (kbd "M-k") 'copy-whole-line)
+#+END_SRC
+
+** Run clang-format : s-f
+If there is a .clang-format file at the root of the project, run clang-format on the current buffer.
+If there is no file, do nothing.
+#+BEGIN_SRC emacs-lisp
+  (defun clang-format-buffer-smart ()
+    "Reformat buffer if .clang-format exists in the projectile root."
+    (interactive)
+    (when (file-exists-p (expand-file-name ".clang-format" (projectile-project-root)))
+      (clang-format-buffer)
+      )
+    )
+
+  (global-set-key (kbd "s-f") 'clang-format-buffer-smart)
+#+END_SRC
+
+** Resize split windows : S-C-up/down/left/right
+Having turned off the scroll bar and other window decoration, I often struggle to 'grab' window borders to resize.
+These shortcuts allow resizing without the mouse.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<S-C-left>") (lambda () (interactive) (shrink-window-horizontally 5)))
+  (global-set-key (kbd "<S-C-right>") (lambda () (interactive) (enlarge-window-horizontally 5)))
+  (global-set-key (kbd "<S-C-down>") (lambda () (interactive) (shrink-window 5)))
+  (global-set-key (kbd "<S-C-up>") (lambda () (interactive) (enlarge-window 5)))
+#+END_SRC
+* Packages
+** Org
+Not sure if we need to install the org package, but lets do it anyway.
+The org-bullets package is pure aesthetic.
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :ensure t
+    :init (setq org-log-done t)
+    )
+
+  (setq org-ellipsis " ")
+
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-window-setup 'current-window)
+
+  (setq org-confirm-babel-evaluate nil)
+
+  (setq org-export-with-smart-quotes t)
+
+  (add-hook 'org-mode-hook 'org-indent-mode)
+
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
+    )
+#+END_SRC
+
+** Syntax highlighting for documents exported to HTML
+One day I'll start writing talks/presentations in emacs and org-mode.
+This package will make them look nice when exported to html.
+#+BEGIN_SRC emacs-lisp
+  (use-package htmlize
+    :ensure t
+    )
+#+END_SRC
+
+** Keybindings
+Don't open a new frame, edit org-mode src blocks in the current buffer.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c '") 'org-edit-src-code)
+#+END_SRC
+
+** Beacon
+Briefly flash on the cursor line when changing buffers.
+#+BEGIN_SRC emacs-lisp
+  (use-package beacon
+    :ensure t
+    :diminish
+    :config
+    (beacon-mode 1)
+    )
+#+END_SRC
+
+** Rainbow Delimiters
+Change the colour of matching pairs of brackets/parentheses/delimiters if there are >1 in a single expression.
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :hook
+    (prog-mode . rainbow-delimiters-mode)
+    )
+#+END_SRC
+
+** Hideshow
+Allow the collapsing of sections of code/files so you can focus on the area you are interested in.
+Currently only activated for programming modes.
+#+BEGIN_SRC emacs-lisp
+  (use-package hideshow
+    :ensure t
+    :diminish hs-minor-mode
+    :hook
+    (prog-mode . hs-minor-mode)
+    )
+#+END_SRC
+
+** Expand Region
+Incrementally highlight increasing amounts of scope.
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :bind ("C-q" . er/expand-region)
+    )
+#+END_SRC
+
+** Multiple Cursors
+This package acts like an interactive macro.
+Select a region, call this pacakge to also select the next matching region in the buffer, repeat as required.
+You can now apply the necessary alteration to all instances of said region in the buffer as you have ... multiple cursors.
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+    :ensure t
+    :bind
+    ("s->" . mc/mark-next-like-this)
+    ("s-<" . mc/mark-previous-like-this)
+    ("C-c s->" . mc/mark-all-like-this)
+    ("C->" . mc/mark-next-word-like-this)
+    ("C-<" . mc/mark-previous-word-like-this)
+    ("C-c C->" . mc/mark-all-words-this)
+    )
+#+END_SRC
+
+** Ivy
+This may be redundant if I also load IDO.
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    )
+#+END_SRC
+
+** Magit
+I use git => I use magit.
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :bind ("C-x g" . magit-status)
+    )
+#+END_SRC
+
+** Git gutter
+Put markers in the margin to show if a line has been modified.
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter-fringe+
+    :ensure t
+    :diminish git-gutter+-mode
+    :config
+    (global-git-gutter+-mode)
+    )
+#+END_SRC
+
+** Electric Pairs
+Automatically add a matchin closing braket.
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+                             (?\{ . ?\})
+                             (?\( . ?\))
+                             (?\[ . ?\])
+                             )
+        )
+  (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
+  (electric-pair-mode t)
+#+END_SRC
+
+** Swiper & Avy
+Nicer default searching.
+Swiper shows results in the mode line, as well as the buffer, giving a good overview of search results.
+Avy allows quick navigation in the current view of the buffer via searching a single character.
+
+TODO: Get case sensitive searching to work.
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :bind ("C-s" . 'swiper)
+    )
+
+  (use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char)
+    )
+#+END_SRC
+
+** Which Key
+Never get stuck mid-shortcut again.
+After an inital key-chord, all available options will be shown in the mini buffer with a description.
+If you can't remember the first part then you're all out of luck.
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :diminish
+    :init
+    (which-key-mode)
+    )
+#+END_SRC
+
+** Projectile
+Provides functionality to interact with projects e.g. compile, search, switch better definition and implementation.
+#+BEGIN_SRC emacs-lisp
+  ;Gnome3 uses super-p so have turned it off with dconf-editor
+  ;/org/gnome/mutter/keybindings/switch-monitor
+  (use-package projectile
+    :ensure t
+    :bind-keymap ("s-p" . projectile-command-map)
+    :init
+    (projectile-mode)
+    )
+#+END_SRC
+
+** Switch Windows
+Instead of 'randomly' cycling through multiple frames, immediately visit the one you want.
+#+BEGIN_SRC emacs-lisp
+  (use-package switch-window
+    :ensure t
+    :config
+      (setq switch-window-input-style 'minibuffer)
+      (setq switch-window-increase 4)
+      (setq switch-window-threshold 2)
+      (setq switch-window-shortcut-style 'qwerty)
+      (setq switch-window-qwerty-shortcuts
+          '("a" "s" "d" "f" "j" "k" "l" "i" "o"))
+    :bind
+    ([remap other-window] . switch-window)
+    )
+#+END_SRC
+
+** Whitespace
+Highlight the parts of a line that breach a set character limit.
+#+BEGIN_SRC emacs-lisp
+  (use-package whitespace
+    :diminish
+    :config
+    (setq-default
+     whitespace-line-column 120
+     whitespace-style '(face lines-tail)
+     )
+    (add-hook 'prog-mode-hook #'whitespace-mode)
+    )
+#+END_SRC
+
+More elegant than a global delete-trailing-whitespace on save hook.
+#+BEGIN_SRC emacs-lisp
+  (use-package ws-butler
+    :ensure t
+    :diminish ws-butler-mode
+    :config
+    (add-hook 'prog-mode-hook 'ws-butler-mode)
+    )
+#+END_SRC
+
+** Flycheck
+On the FLY CHECKing of code for errors.
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode t)
+    )
+
+  (use-package flycheck-clang-analyzer
+    :ensure t
+    :config
+    (with-eval-after-load 'flycheck
+      (require 'flycheck-clang-analyzer)
+      (flycheck-clang-analyzer-setup)
+      )
+    )
+#+END_SRC
+
+** C++
+Additional minor mode that understands modern (C++11 and beyond) c++ features.
+Tell the C++ packages and settings which standard we are coding against.
+#+BEGIN_SRC emacs-lisp
+  (use-package modern-cpp-font-lock
+    :ensure t
+    :diminish modern-c++-font-lock-mode
+    :config
+    (modern-c++-font-lock-global-mode t)
+    )
+
+  ;; Default to C++14
+  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++14")))
+  (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+#+END_SRC
+
+** Python
+Make sure we create correctly formatted and indented code
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'python-mode-hook
+        (lambda ()
+          (setq-default indent-tabs-mode nil)
+          (setq-default tab-width 4)
+          (setq-default python-indent 4))
+        )
+#+END_SRC
+
+** Diminish
+I like a clean and minimal mode-line so don't show the active minor modes.
+Packages loaded with use-package can be removed with ":diminsh", so this list should be short.
+
+TODO: Would I need this package if there was nothing in the list?
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'subword-mode)
+    (diminish 'eldoc-mode)
+    (diminish 'abbrev-mode)
+    (diminish 'auto-revert-mode)
+    )
+#+END_SRC
+
+** Yasnippiets
+Snippets can save a lot of time, and typo hunting.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :diminish yas-minor-mode
+    :init
+    (yas-global-mode 1)
+    :config
+    (use-package yasnippet-snippets
+      :ensure t
+      :defer t
+      )
+    (yas-reload-all)
+    :hook
+    (c++-mode . yas-minor-mode)
+    (c-mode . yas-minor-mode)
+    )
+#+END_SRC
+
+*** My own snippets
+"<el"-<TAB> will create an elisp code block. Good for playing in this file.
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-structure-template-alist
+               '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
+               )
+#+END_SRC
