@@ -4,7 +4,7 @@ After accidentally deleting the entire ~/.emacs.d directory, and only having a v
 The version I recovered was close to the one I lost, but different enough that it was annoying, and having not kept track I couldn't put my finger on why.
 I therefore did what any sensible person would do: scrapped everything and started from scratch.
 
-The configuration uses the 'org file called by the init file' set up, so the main configuration is in [config.org] which is called by [init.el].
+The configuration uses the 'org file called by the init file' set up, so the main configuration is in [config.org](config.org) which is called by [init.el](init.el).
 
 ## Installation and set-up
 
