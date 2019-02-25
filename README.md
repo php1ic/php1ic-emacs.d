@@ -43,3 +43,9 @@ I use emacs mainly for programming, so some external packages are required on th
 - **[jedi](https://tkf.github.io/emacs-jedi/)** for python. You will need to install the jedi server with `M-x jedi:install-server`
   * [virtualenv](https://virtualenv.pypa.io/)
 
+### Known Issues
+
+After you update packages (`M-x list-packages` then `U` then `x`), emacs tells you that some packages are obsolete and can removed with `M-x package-autoremove`.
+This is not true, as if you do run that command, the next time you launch emacs they are downloaded and installed again.
+They are all included via use-package with `ensure: t` but if you look at the list of packages, those that emacs thinks can be removed are marked as dependencies.
+Not sure what's going on here.

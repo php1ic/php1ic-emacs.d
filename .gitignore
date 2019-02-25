@@ -3,9 +3,12 @@ config.el
 recentf
 projectile-bookmarks.eld
 ido.last
+session*
+.mc-lists.el
 
 elpa
 snippets
 auto-save-list
 irony
+transient
 .python-environments
