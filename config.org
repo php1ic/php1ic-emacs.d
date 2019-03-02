@@ -447,8 +447,45 @@ Snippets can save a lot of time, and typo hunting.
                '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
                )
 #+END_SRC
+
+** lsp
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    :hook (prog-mode . lsp)
+    )
+
+  (use-package lsp-ui
+    :ensure t
+    )
+
+  (use-package company-lsp
+    :ensure t
+    )
+#+END_SRC
+
+** ccls
+#+BEGIN_SRC emacs-lisp
+  (use-package use-package-ensure-system-package
+    :ensure t
+    )
+
+  (use-package ccls
+    :ensure t
+    :after projectile
+    :ensure-system-package ccls
+    :custom
+    (ccls-args nil)
+    (ccls-executable (executable-find "ccls"))
+    (projectile-project-root-files-top-down-recurring
+     (append '("compile_commands.json" ".ccls")
+             projectile-project-root-files-top-down-recurring))
+    :config (push ".ccls-cache" projectile-globally-ignored-directories)
+    )
+#+END_SRC
 * Additional Modes
 ** Company
+
 Set up company as the back end for IDE like completion.
 #+BEGIN_SRC emacs-lisp
   (use-package company
@@ -476,11 +513,11 @@ Set up company as the back end for IDE like completion.
           )
     )
 
-  (use-package irony-eldoc
-    :ensure t
-    :config
-    (add-hook 'irony-mode-hook #'irony-eldoc)
-    )
+  ;;(use-package irony-eldoc
+  ;;  :ensure t
+  ;;  :config
+  ;;  (add-hook 'irony-mode-hook #'irony-eldoc)
+  ;;  )
 
   (use-package company-jedi
     :ensure t
@@ -495,6 +532,40 @@ Set up company as the back end for IDE like completion.
   (add-hook 'python-mode-hook 'my/python-mode-hook)
 #+END_SRC
 
+** CMake
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode
+    :ensure t
+    :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'")
+    )
+
+  (use-package cmake-font-lock
+    :ensure t
+    :after (cmake-mode)
+    :hook (cmake-mode . cmake-font-lock-activate)
+    )
+
+  (use-package cmake-ide
+    :ensure t
+    :after projectile
+    :hook (c++-mode . my/cmake-ide-find-project)
+    :preface
+    (defun my/cmake-ide-find-project ()
+      "Finds the directory of the project for cmake-ide."
+      (with-eval-after-load 'projectile
+        (setq cmake-ide-project-dir (projectile-project-root))
+        (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
+      (setq cmake-ide-compile-command (concat "cd " cmake-ide-build-dir " && cmake --build ."))
+      (cmake-ide-load-db))
+
+    (defun my/switch-to-compilation-window ()
+      "Switches to the *compilation* buffer after compilation."
+      (other-window 1))
+    :bind ([remap comment-region] . cmake-ide-compile)
+    :init (cmake-ide-setup)
+    :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
+    )
+#+END_SRC
 ** Ido
 Enable ido mode for better buffer opening.
 #+BEGIN_SRC emacs-lisp

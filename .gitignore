@@ -5,6 +5,7 @@ projectile-bookmarks.eld
 ido.last
 session*
 .mc-lists.el
+.lsp-session-v1
 
 elpa
 snippets
