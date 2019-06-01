@@ -1,7 +1,8 @@
 * Appearance
 ** General Setting
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "DejaVu Sans Mono 7")
+  ;(set-frame-font "DejaVu Sans Mono 7")
+  (set-frame-font "Inconsolata-7")
 
   ;; Don't change the font for sub/superscript in latex
   (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore))
@@ -270,9 +271,8 @@ Automatically add a matchin closing braket.
                              )
         )
   (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
-  (electric-pair-mode t)
+  ;(electric-pair-mode t)
 #+END_SRC
-
 ** Swiper & Avy
 Nicer default searching.
 Swiper shows results in the mode line, as well as the buffer, giving a good overview of search results.
@@ -490,46 +490,32 @@ Set up company as the back end for IDE like completion.
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
+    :defer 2
     :diminish
-    :config
-    (setq company-idle-delay 0)
-    (setq company-minimum-prefix-length 1)
-    ;;:hook
-    ;;(c++-mode . company-mode)
-    ;;(c-mode . company-mode)
+    :custom
+    (company-begin-commands '(self-insert-command))
+    (company-idle-delay .1)
+    (company-minimum-prefix-length 2)
+    (company-show-numbers t)
+    (company-tooltip-align-annotations 't)
     (global-company-mode t)
     )
 
   (use-package company-c-headers
     :ensure t
+    :after (company)
+    :config (add-to-list 'company-backends 'company-c-headers)
     )
 
-  (use-package company-irony
+  (use-package anaconda-mode
     :ensure t
-    :config
-    (setq company-backends '((company-c-headers
-                              company-dabbrev-code
-                              company-irony))
-          )
     )
 
-  ;;(use-package irony-eldoc
-  ;;  :ensure t
-  ;;  :config
-  ;;  (add-hook 'irony-mode-hook #'irony-eldoc)
-  ;;  )
-
-  (use-package company-jedi
+  (use-package company-anaconda
     :ensure t
-    :config
-    (add-hook 'python-mode-hook 'jedi:setup)
+    :after (anaconda-mode company)
+    :config (add-to-list 'company-backends 'company-anaconda)
     )
-
-  (defun my/python-mode-hook ()
-    (add-to-list 'company-backends 'company-jedi)
-    )
-
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
 #+END_SRC
 
 ** CMake
