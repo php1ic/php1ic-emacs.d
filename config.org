@@ -261,6 +261,16 @@ Put markers in the margin to show if a line has been modified.
     )
 #+END_SRC
 
+** Magit TODOs
+Show any TODO/FIXME lines in the magit status buffer
+#+BEGIN_SRC emacs-lisp
+  (use-package magit-todos
+    :ensure t
+    :config
+    (magit-todos-mode 1)
+    )
+#+END_SRC
+
 ** Electric Pairs
 Automatically add a matchin closing braket.
 #+BEGIN_SRC emacs-lisp
