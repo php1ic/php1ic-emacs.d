@@ -31,7 +31,8 @@
 (setq package-enable-at-startup nil)
 
 (setq package-archives '(
-                         ("gnu" . "https://elpa.gnu.org/packages/")
+                         ;("gnu" . "https://elpa.gnu.org/packages/")
+                         ("gnu" . "https://mirrors.163.com/elpa/gnu/")
 			 ("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          )
