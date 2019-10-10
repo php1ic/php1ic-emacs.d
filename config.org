@@ -453,11 +453,11 @@ Snippets can save a lot of time, and typo hunting.
     :diminish yas-minor-mode
     :init
     (yas-global-mode 1)
-    :config
-    (use-package yasnippet-snippets
-      :ensure t
-      :defer t
-      )
+    ;;:config
+    ;;(use-package yasnippet-snippets
+    ;;  :ensure t
+    ;;  :defer t
+    ;;  )
     (yas-reload-all)
     :hook
     (c++-mode . yas-minor-mode)
