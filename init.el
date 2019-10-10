@@ -63,7 +63,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (magit-todos async company company-jedi flycheck gitlab-ci-mode gitlab-ci-mode-flycheck irony irony-eldoc jedi-core yasnippet yaml-mode ws-butler which-key use-package switch-window swiper solarized-theme smart-mode-line rainbow-delimiters projectile org-bullets multiple-cursors modern-cpp-font-lock markdown-mode magit ido-vertical-mode ido-completing-read+ htmlize git-gutter-fringe+ flycheck-clang-analyzer flx-ido expand-region diminish dashboard company-irony company-c-headers beacon avy))))
+    (dash dash-functional epl f flx fringe-helper cmake-font-lock cmake-ide company-lsp git-commit git-gutter+ hl-todo cmake-mode use-package-ensure-system-package ccls ivy lsp-mode lsp-ui magit-todos async company company-jedi flycheck gitlab-ci-mode gitlab-ci-mode-flycheck irony irony-eldoc jedi-core yasnippet yaml-mode ws-butler which-key use-package switch-window swiper solarized-theme smart-mode-line rainbow-delimiters projectile org-bullets multiple-cursors modern-cpp-font-lock markdown-mode magit ido-vertical-mode ido-completing-read+ htmlize git-gutter-fringe+ flycheck-clang-analyzer flx-ido expand-region diminish dashboard company-irony company-c-headers beacon avy))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -358,14 +358,23 @@ Highlight the parts of a line that breach a set character limit.
     )
 #+END_SRC
 
-More elegant than a global delete-trailing-whitespace on save hook.
+;;Not sure this actually works
+;;More elegant than a global delete-trailing-whitespace on save hook.
+;;#+BEGIN_SRC emacs-lisp
+;;  (use-package ws-butler
+;;    :ensure t
+;;    :diminish ws-butler-mode
+;;    :config
+;;    (add-hook 'prog-mode-hook 'ws-butler-mode)
+;;    )
+;;#+END_SRC
+
+Delete trailing whitespace on save, except markdown mode when they represent something
 #+BEGIN_SRC emacs-lisp
-  (use-package ws-butler
-    :ensure t
-    :diminish ws-butler-mode
-    :config
-    (add-hook 'prog-mode-hook 'ws-butler-mode)
-    )
+  (add-hook 'before-save-hook '(lambda()
+                                 (when (not (or (derived-mode-p 'markdown-mode)))
+                                   (delete-trailing-whitespace)))
+            )
 #+END_SRC
 
 ** Flycheck
@@ -412,6 +421,12 @@ Make sure we create correctly formatted and indented code
           (setq-default tab-width 4)
           (setq-default python-indent 4))
         )
+
+  ;;(use-package elpy
+  ;;  :ensure t
+  ;;  :init
+  ;;  (elpy-enable)
+  ;;  )
 #+END_SRC
 
 ** Diminish
@@ -462,16 +477,22 @@ Snippets can save a lot of time, and typo hunting.
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
     :ensure t
-    :hook (prog-mode . lsp)
+    :commands lsp
+    :hook (python-mode c-mode c++-mode. lsp)
     )
 
   (use-package lsp-ui
     :ensure t
+    :after lsp-mode
+    :commands lsp-ui-mode
     )
 
   (use-package company-lsp
     :ensure t
+    :config
+    (push 'company-lsp company-backends)
     )
+
 #+END_SRC
 
 ** ccls
@@ -517,15 +538,15 @@ Set up company as the back end for IDE like completion.
     :config (add-to-list 'company-backends 'company-c-headers)
     )
 
-  (use-package anaconda-mode
-    :ensure t
-    )
-
-  (use-package company-anaconda
-    :ensure t
-    :after (anaconda-mode company)
-    :config (add-to-list 'company-backends 'company-anaconda)
-    )
+  ;(use-package anaconda-mode
+  ;  :ensure t
+  ;  )
+  ;
+  ;(use-package company-anaconda
+  ;  :ensure t
+  ;  :after (anaconda-mode company)
+  ;  :config (add-to-list 'company-backends 'company-anaconda)
+  ;  )
 #+END_SRC
 
 ** CMake
