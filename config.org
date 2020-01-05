@@ -1,8 +1,8 @@
 * Appearance
 ** General Setting
 #+BEGIN_SRC emacs-lisp
-  ;(set-frame-font "DejaVu Sans Mono 7")
-  (set-frame-font "Inconsolata-7")
+  (set-frame-font "DejaVu Sans Mono 7")
+  ;(set-frame-font "Inconsolata-7")
 
   ;; Don't change the font for sub/superscript in latex
   (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore))
@@ -407,9 +407,9 @@ Tell the C++ packages and settings which standard we are coding against.
     (modern-c++-font-lock-global-mode t)
     )
 
-  ;; Default to C++14
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++14")))
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+  ;; Default to C++17
+  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
+  (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 #+END_SRC
 
 ** Python

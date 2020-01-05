@@ -31,8 +31,8 @@
 (setq package-enable-at-startup nil)
 
 (setq package-archives '(
-                         ;("gnu" . "https://elpa.gnu.org/packages/")
-                         ("gnu" . "https://mirrors.163.com/elpa/gnu/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")
+                         ;("gnu" . "https://mirrors.163.com/elpa/gnu/")
 			 ("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          )
@@ -63,7 +63,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (dash dash-functional epl f flx fringe-helper cmake-font-lock cmake-ide company-lsp git-commit git-gutter+ hl-todo cmake-mode use-package-ensure-system-package ccls ivy lsp-mode lsp-ui magit-todos async company company-jedi flycheck gitlab-ci-mode gitlab-ci-mode-flycheck irony irony-eldoc jedi-core yasnippet yaml-mode ws-butler which-key use-package switch-window swiper solarized-theme smart-mode-line rainbow-delimiters projectile org-bullets multiple-cursors modern-cpp-font-lock markdown-mode magit ido-vertical-mode ido-completing-read+ htmlize git-gutter-fringe+ flycheck-clang-analyzer flx-ido expand-region diminish dashboard company-irony company-c-headers beacon avy))))
+    (gitlab-ci-mode-flycheck gitlab-ci-mode irony ido-completing-read+ ido-vertical-mode flx-ido cmake-ide cmake-font-lock cmake-mode company-c-headers ccls use-package-ensure-system-package company-lsp lsp-ui lsp-mode yasnippet diminish modern-cpp-font-lock flycheck-clang-analyzer flycheck switch-window projectile which-key avy swiper magit-todos git-gutter-fringe+ magit ivy multiple-cursors expand-region rainbow-delimiters beacon htmlize org-bullets smart-mode-line solarized-theme dashboard use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
