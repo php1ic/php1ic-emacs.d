@@ -428,7 +428,8 @@ Delete trailing whitespace on save, except markdown mode when they represent som
 #+END_SRC
 
 ** All the icons
-Fancy icons in dired mode
+Fancy icons in dired mode.
+Don't forget to execute `M-x all-the-icons-install-fonts` the first time you run/use/install
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :ensure t
