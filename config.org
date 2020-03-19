@@ -1,8 +1,8 @@
 * Appearance
-** General Setting
+** General Settings
 #+BEGIN_SRC emacs-lisp
   (set-frame-font "DejaVu Sans Mono 7")
-  ;(set-frame-font "Inconsolata-7")
+  ;;(set-frame-font "Inconsolata-7")
 
   ;; Don't change the font for sub/superscript in latex
   (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore))
@@ -130,7 +130,62 @@ Add the current file/buffer and project name to the title, if we are in a projec
           )
         )
 #+END_SRC
+
 * Packages
+** Auto Completion
+I'm having a mental block when it comes to auto-completion.
+I got this of the internet [[https://www.sandeepnambiar.com/setting-up-emacs-for-c++/]]
+It ain't broke so, for the moment, I ain't gonna fix it
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+      :ensure t
+      ;;:defer 2
+      :diminish
+      :custom
+      (company-begin-commands '(self-insert-command))
+      (company-idle-delay .1)
+      (company-minimum-prefix-length 1)
+      (company-show-numbers t)
+      (company-tooltip-align-annotations 't)
+      (global-company-mode t)
+      )
+
+  (use-package lsp-mode
+    :ensure t
+    :init
+    (setq lsp-keymap-prefix "s-z")
+    :hook (
+           (lsp-mode . lsp-enable-which-key-integration)
+           (python-mode . lsp)
+           (cmake-mode . lsp)
+           (c++-mode . lsp)
+           )
+    :commands lsp
+    )
+
+  (use-package lsp-ui
+    :ensure t
+    :commands lsp-ui-mode
+    )
+
+  (use-package company-lsp
+    :ensure t
+    :commands company-lsp
+    :config (push 'company-lsp company-backends) ;; add company-lsp as a backend
+    )
+
+  (use-package ccls
+    :ensure t
+    :config
+    (setq ccls-executable "~/.local/bin/ccls")
+    (setq lsp-prefer-flymake nil)
+    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+    :hook ((c-mode c++-mode objc-mode) .
+           (lambda () (require 'ccls) (lsp))
+           )
+    )
+#+END_SRC
+
 ** Org
 Not sure if we need to install the org package, but lets do it anyway.
 The org-bullets package is pure aesthetic.
@@ -233,14 +288,6 @@ You can now apply the necessary alteration to all instances of said region in th
     )
 #+END_SRC
 
-** Ivy
-This may be redundant if I also load IDO.
-#+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :ensure t
-    )
-#+END_SRC
-
 ** Magit
 I use git => I use magit.
 #+BEGIN_SRC emacs-lisp
@@ -261,28 +308,6 @@ Put markers in the margin to show if a line has been modified.
     )
 #+END_SRC
 
-** Magit TODOs
-Show any TODO/FIXME lines in the magit status buffer
-#+BEGIN_SRC emacs-lisp
-  (use-package magit-todos
-    :ensure t
-    :config
-    (magit-todos-mode 1)
-    )
-#+END_SRC
-
-** Electric Pairs
-Automatically add a matchin closing braket.
-#+BEGIN_SRC emacs-lisp
-  (setq electric-pair-pairs '(
-                             (?\{ . ?\})
-                             (?\( . ?\))
-                             (?\[ . ?\])
-                             )
-        )
-  (setq-default electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit)
-  ;(electric-pair-mode t)
-#+END_SRC
 ** Swiper & Avy
 Nicer default searching.
 Swiper shows results in the mode line, as well as the buffer, giving a good overview of search results.
@@ -344,91 +369,6 @@ Instead of 'randomly' cycling through multiple frames, immediately visit the one
     )
 #+END_SRC
 
-** Whitespace
-Highlight the parts of a line that breach a set character limit.
-#+BEGIN_SRC emacs-lisp
-  (use-package whitespace
-    :diminish
-    :config
-    (setq-default
-     whitespace-line-column 120
-     whitespace-style '(face lines-tail)
-     )
-    (add-hook 'prog-mode-hook #'whitespace-mode)
-    )
-#+END_SRC
-
-;;Not sure this actually works
-;;More elegant than a global delete-trailing-whitespace on save hook.
-;;#+BEGIN_SRC emacs-lisp
-;;  (use-package ws-butler
-;;    :ensure t
-;;    :diminish ws-butler-mode
-;;    :config
-;;    (add-hook 'prog-mode-hook 'ws-butler-mode)
-;;    )
-;;#+END_SRC
-
-Delete trailing whitespace on save, except markdown mode when they represent something
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'before-save-hook '(lambda()
-                                 (when (not (or (derived-mode-p 'markdown-mode)))
-                                   (delete-trailing-whitespace)))
-            )
-#+END_SRC
-
-** Flycheck
-On the FLY CHECKing of code for errors.
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :init
-    (global-flycheck-mode t)
-    )
-
-  (use-package flycheck-clang-analyzer
-    :ensure t
-    :config
-    (with-eval-after-load 'flycheck
-      (require 'flycheck-clang-analyzer)
-      (flycheck-clang-analyzer-setup)
-      )
-    )
-#+END_SRC
-
-** C++
-Additional minor mode that understands modern (C++11 and beyond) c++ features.
-Tell the C++ packages and settings which standard we are coding against.
-#+BEGIN_SRC emacs-lisp
-  (use-package modern-cpp-font-lock
-    :ensure t
-    :diminish modern-c++-font-lock-mode
-    :config
-    (modern-c++-font-lock-global-mode t)
-    )
-
-  ;; Default to C++17
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++17")))
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
-#+END_SRC
-
-** Python
-Make sure we create correctly formatted and indented code
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'python-mode-hook
-        (lambda ()
-          (setq-default indent-tabs-mode nil)
-          (setq-default tab-width 4)
-          (setq-default python-indent 4))
-        )
-
-  ;;(use-package elpy
-  ;;  :ensure t
-  ;;  :init
-  ;;  (elpy-enable)
-  ;;  )
-#+END_SRC
-
 ** Diminish
 I like a clean and minimal mode-line so don't show the active minor modes.
 Packages loaded with use-package can be removed with ":diminsh", so this list should be short.
@@ -453,18 +393,12 @@ Snippets can save a lot of time, and typo hunting.
     :diminish yas-minor-mode
     :init
     (yas-global-mode 1)
-    ;;:config
-    ;;(use-package yasnippet-snippets
-    ;;  :ensure t
-    ;;  :defer t
-    ;;  )
     (yas-reload-all)
     :hook
     (c++-mode . yas-minor-mode)
     (c-mode . yas-minor-mode)
     )
 #+END_SRC
-
 *** My own snippets
 "<el"-<TAB> will create an elisp code block. Good for playing in this file.
 #+BEGIN_SRC emacs-lisp
@@ -472,112 +406,29 @@ Snippets can save a lot of time, and typo hunting.
                '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
                )
 #+END_SRC
-
-** lsp
+** Whitespace
+Highlight the parts of a line that breach a set character limit.
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-    :ensure t
-    :hook (prog-mode . lsp)
-    )
-
-  (use-package lsp-ui
-    :ensure t
-    )
-
-  (use-package company-lsp
-    :ensure t
-    )
-
-#+END_SRC
-
-** ccls
-#+BEGIN_SRC emacs-lisp
-  (use-package use-package-ensure-system-package
-    :ensure t
-    )
-
-  (use-package ccls
-    :ensure t
-    :after projectile
-    :ensure-system-package ccls
-    :custom
-    (ccls-args nil)
-    (ccls-executable (executable-find "ccls"))
-    (projectile-project-root-files-top-down-recurring
-     (append '("compile_commands.json" ".ccls")
-             projectile-project-root-files-top-down-recurring))
-    :config (push ".ccls-cache" projectile-globally-ignored-directories)
-    )
-#+END_SRC
-* Additional Modes
-** Company
-
-Set up company as the back end for IDE like completion.
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :defer 2
+  (use-package whitespace
     :diminish
-    :custom
-    (company-begin-commands '(self-insert-command))
-    (company-idle-delay .1)
-    (company-minimum-prefix-length 2)
-    (company-show-numbers t)
-    (company-tooltip-align-annotations 't)
-    (global-company-mode t)
+    :hook (prog-mode . whitespace-mode)
+    :config
+    (setq-default
+     whitespace-line-column 120
+     whitespace-style '(face lines-tail)
+     )
     )
-
-  (use-package company-c-headers
-    :ensure t
-    :after (company)
-    :config (add-to-list 'company-backends 'company-c-headers)
-    )
-
-  ;(use-package anaconda-mode
-  ;  :ensure t
-  ;  )
-  ;
-  ;(use-package company-anaconda
-  ;  :ensure t
-  ;  :after (anaconda-mode company)
-  ;  :config (add-to-list 'company-backends 'company-anaconda)
-  ;  )
 #+END_SRC
 
-** CMake
+Delete trailing whitespace on save, except markdown mode when they represent something
 #+BEGIN_SRC emacs-lisp
-  (use-package cmake-mode
-    :ensure t
-    :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'")
-    )
-
-  (use-package cmake-font-lock
-    :ensure t
-    :after (cmake-mode)
-    :hook (cmake-mode . cmake-font-lock-activate)
-    )
-
-  (use-package cmake-ide
-    :ensure t
-    :after projectile
-    :hook (c++-mode . my/cmake-ide-find-project)
-    :preface
-    (defun my/cmake-ide-find-project ()
-      "Finds the directory of the project for cmake-ide."
-      (with-eval-after-load 'projectile
-        (setq cmake-ide-project-dir (projectile-project-root))
-        (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
-      (setq cmake-ide-compile-command (concat "cd " cmake-ide-build-dir " && cmake --build ."))
-      (cmake-ide-load-db))
-
-    (defun my/switch-to-compilation-window ()
-      "Switches to the *compilation* buffer after compilation."
-      (other-window 1))
-    :bind ([remap comment-region] . cmake-ide-compile)
-    :init (cmake-ide-setup)
-    :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window)
-    )
+  (add-hook 'before-save-hook '(lambda()
+                                 (when (not (or (derived-mode-p 'markdown-mode)))
+                                   (delete-trailing-whitespace)))
+            )
 #+END_SRC
+
+* Additional Modes
 ** Ido
 Enable ido mode for better buffer opening.
 #+BEGIN_SRC emacs-lisp
@@ -586,7 +437,6 @@ Enable ido mode for better buffer opening.
     :init
     (flx-ido-mode 1)
     )
-  ;;(flx-ido-mode 1)
 
   (ido-mode 1)
   (ido-everywhere 1)
@@ -607,19 +457,6 @@ Enable ido mode for better buffer opening.
     )
 #+END_SRC
 
-** Irony
-Front end for code completion.
-#+BEGIN_SRC emacs-lisp
-  (use-package irony
-    :ensure t
-    :diminish
-    :config
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-    )
-#+END_SRC
-
 ** Gitlab-CI
 Additional syntax highlighting for .gitlab-ci.yml files
 #+BEGIN_SRC emacs-lisp
@@ -636,7 +473,7 @@ Additional syntax highlighting for .gitlab-ci.yml files
 #+END_SRC
 
 ** Yaml
-Wasn't installed.
+Wasn't installed by default.
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
     :ensure t
@@ -644,7 +481,7 @@ Wasn't installed.
 #+END_SRC
 
 ** Markdown
-Wasn't installed.
+Wasn't installed by default.
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
       :ensure t
@@ -653,7 +490,8 @@ Wasn't installed.
 #+END_SRC
 
 ** Modes for specific file extensions
-Creating combined tex/eps figures with xfig outputs files with non-standard extensions, make sure they are highlighted appropriately
+Creating combined tex/eps figures with xfig outputs files with non-standard extensions.
+Make sure they are highlighted appropriately.
 #+BEGIN_SRC emacs-lisp
   (setq auto-mode-alist
         (append '(
@@ -663,6 +501,7 @@ Creating combined tex/eps figures with xfig outputs files with non-standard exte
                 auto-mode-alist)
         )
 #+END_SRC
+
 * Functions & Custom shortcuts
 ** Follow a split : C-x 2/3
 In vanilla emacs, if you split a window, you remain the original frame.
