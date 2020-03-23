@@ -159,6 +159,7 @@ It ain't broke so, for the moment, I ain't gonna fix it
            (python-mode . lsp)
            (cmake-mode . lsp)
            (c++-mode . lsp)
+           (sh-mode . lsp)
            )
     :commands lsp
     )
