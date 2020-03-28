@@ -15,7 +15,7 @@ Depending on how you organise your system, either clone this repo directly into 
 git clone https://gitlab.com/php1ic/php1ic-emacs.d.git ~/.emacs.d
 ```
 
-Or clone to the place where your other repos live and create a symbolic link
+Or clone somewhere locally and create a symbolic link
 
 ```bash
 cd /path/to/other/repos
@@ -34,14 +34,16 @@ I recommend that after the initial launch, once everything looks to be loaded, y
 
 ### External dependencies
 
-I use emacs mainly for programming, so some external packages are required on the system to allow internal packages to function correctly. The internal packages and their dependencies are listed below. Follow the links for full details.
+I use emacs mainly for programming, so some external packages are required on the system to allow internal packages to function correctly.
+They are focussed around [lsp](https://github.com/emacs-lsp/lsp-mode) for autocompletion/IDE behaviour and are:
+ - C++ : [ccls](https://github.com/MaskRay/ccls)
+ - Python : [python-language-server](https://github.com/palantir/python-language-server)
+ - BASH : [bash-language-server](https://github.com/mads-hartmann/bash-language-server)
+ - CMake : [cmake-language-server](https://github.com/regen100/cmake-language-server)
 
-- **[Irony](https://github.com/Sarcasm/irony-mode)** for C++. You will need to install the irony server with `M-x irony-install-server`
-  * [cmake](https://cmake.org)
-  * [libclang](https://clang.llvm.org/doxygen/group__CINDEX.html), make sure to get the development package for libclang so Irony can compile. Depending on the distribution you are using it will likely contain 'dev' or 'devel' in the name.
+Installation instructions for each can be found on the [lsp page](https://github.com/emacs-lsp/lsp-mode#supported-languages).
 
-- **[jedi](https://tkf.github.io/emacs-jedi/)** for python. You will need to install the jedi server with `M-x jedi:install-server`
-  * [virtualenv](https://virtualenv.pypa.io/)
+**WARNING**: [pyls](https://github.com/rmarkello/pyls) is also available via pip on [pipy](https://pypi.org/project/pyls/) but is a different package and unrelated to [python-language-server](https://github.com/palantir/python-language-server).
 
 ### Known Issues
 
