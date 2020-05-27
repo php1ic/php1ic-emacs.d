@@ -64,7 +64,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flx-ido diminish switch-window which-key avy swiper git-gutter-fringe+ magit smart-mode-line company-lsp lsp-ui lsp-mode use-package)))
+    (cmake-font-lock cmake-mode format-all modern-cpp-font-lock all-the-icons all-the-icons-dired async beacon bind-key ccls company dash dash-functional dashboard epl expand-region f flx flycheck fringe-helper git-commit git-gutter+ gitlab-ci-mode gitlab-ci-mode-flycheck ht htmlize ido-completing-read+ ido-vertical-mode ivy lv markdown-mode memoize multiple-cursors org-bullets page-break-lines pkg-info projectile rainbow-delimiters rich-minority s solarized-theme spinner transient with-editor yaml-mode yasnippet flx-ido diminish switch-window which-key avy swiper git-gutter-fringe+ magit smart-mode-line company-lsp lsp-ui lsp-mode use-package)))
  '(safe-local-variable-values (quote ((magit-todos-exclude-globs "external/*")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
