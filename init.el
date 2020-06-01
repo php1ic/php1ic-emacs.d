@@ -64,7 +64,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("4cf9ed30ea575fb0ca3cff6ef34b1b87192965245776afa9e9e20c17d115f3fb" default)))
+    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "4cf9ed30ea575fb0ca3cff6ef34b1b87192965245776afa9e9e20c17d115f3fb" default)))
  '(package-selected-packages
    (quote
     (gruvbox-theme cmake-font-lock cmake-mode format-all modern-cpp-font-lock all-the-icons all-the-icons-dired async beacon bind-key ccls company dash dash-functional dashboard epl expand-region f flx flycheck fringe-helper git-commit git-gutter+ gitlab-ci-mode gitlab-ci-mode-flycheck ht htmlize ido-completing-read+ ido-vertical-mode ivy lv markdown-mode memoize multiple-cursors org-bullets page-break-lines pkg-info projectile rainbow-delimiters rich-minority s solarized-theme spinner transient with-editor yaml-mode yasnippet flx-ido diminish switch-window which-key avy swiper git-gutter-fringe+ magit smart-mode-line company-lsp lsp-ui lsp-mode use-package)))

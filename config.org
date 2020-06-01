@@ -130,7 +130,7 @@ The default mode line is a bit compact, use this to spread it out.
     :ensure t
     :config
     (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'respectful)
+    (setq sml/theme 'dark)
     (sml/setup)
     )
 #+END_SRC
