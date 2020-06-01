@@ -80,14 +80,14 @@ We are using the dashboard package so stop the default startup screen.
 #+END_SRC
 
 ** Theme
-Not much to say here, use the solarized dark theme.
-#+BEGIN_SRC emacs-lisp
-  (use-package solarized-theme
-    :ensure t
-    :config
-    (load-theme 'solarized-dark t)
-    )
-#+END_SRC
+;;Not much to say here, use the solarized dark theme.
+;;#+BEGIN_SRC emacs-lisp
+;;  (use-package solarized-theme
+;;    :ensure t
+;;    :config
+;;    (load-theme 'solarized-dark t)
+;;    )
+;;#+END_SRC
 
 ;;I like this theme, but the syntax highlighting for C++ has the same colour for type and variable name.
 ;;Will check back once in a while for updates.
@@ -99,6 +99,15 @@ Not much to say here, use the solarized dark theme.
 ;;    (zerodark-setup-modeline-format)
 ;;    )
 ;;#+END_SRC
+
+Let's try gruvbox
+#+BEGIN_SRC emacs-lisp
+  (use-package gruvbox-theme
+    :ensure t
+    :config
+    (load-theme 'gruvbox-dark-medium t)
+    )
+#+END_SRC
 
 ** ibuffer
 Better default buffer for open buffers.
