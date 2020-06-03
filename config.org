@@ -139,14 +139,13 @@ The default mode line is a bit compact, use this to spread it out.
 Add the current file/buffer and project name to the title, if we are in a project.
 #+BEGIN_SRC emacs-lisp
   (setq frame-title-format
-        '("emacs - "
-          "%b"
-          (:eval
+        '((:eval
            (let ((project-name (projectile-project-name)))
              (unless (string= "-" project-name)
-               (format " in [%s]" project-name))
+               (format "[%s] " project-name))
              )
            )
+          "%b"
           )
         )
 #+END_SRC
