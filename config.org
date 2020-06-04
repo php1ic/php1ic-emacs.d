@@ -386,13 +386,25 @@ If you can't remember the first part then you're all out of luck.
 ** Projectile
 Provides functionality to interact with projects e.g. compile, search, switch better definition and implementation.
 #+BEGIN_SRC emacs-lisp
-  ;Gnome3 uses super-p so have turned it off with dconf-editor
-  ;/org/gnome/mutter/keybindings/switch-monitor
+  ;;Gnome3 uses super-p so have turned it off with dconf-editor
+  ;;/org/gnome/mutter/keybindings/switch-monitor
   (use-package projectile
     :ensure t
     :bind-keymap ("s-p" . projectile-command-map)
     :init
     (projectile-mode)
+    :config
+    ;; cmake project is a bit too generic, add more details so I can jump to test
+    ;; https://projectile.readthedocs.io/en/latest/projects/#adding-custom-project-types
+    (projectile-register-project-type 'c++-cmake '("CMakeLists.txt")
+                                      :compilation-dir "build"
+                                      :configure "cmake %s -B %s"
+                                      :compile "cmake --build ."
+                                      :src-dir "src"
+                                      :test "ctest"
+                                      :test-suffix "_test"
+                                      :test-dir "tests"
+                                      )
     )
 #+END_SRC
 
