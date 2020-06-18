@@ -590,6 +590,7 @@ Clang-format files are yaml.
                   ("\\.pstex_t$" . latex-mode)
                   ("\\.pstex$" . ps-mode)
                   ("\\.clang-format\\'" . yaml-mode)
+                  ("\\.clang-tidy\\'" . yaml-mode)
                   )
                 auto-mode-alist)
         )
