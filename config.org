@@ -408,6 +408,20 @@ Provides functionality to interact with projects e.g. compile, search, switch be
     )
 #+END_SRC
 
+** RG - ripgrep
+Better searching within a project
+#+BEGIN_SRC emacs-lisp
+  (use-package rg
+    :ensure t
+    :config
+    (rg-enable-default-bindings)
+    )
+
+  (use-package ripgrep
+    :ensure t
+    )
+#+END_SRC
+
 ** Switch Windows
 Instead of 'randomly' cycling through multiple frames, immediately visit the one you want.
 #+BEGIN_SRC emacs-lisp
@@ -652,7 +666,15 @@ If there is no file, do nothing.
       )
     )
 
+  ;; Map running clang-format to super-f
   (global-set-key (kbd "s-f") 'clang-format-buffer-smart)
+
+  (defun clang-format-buffer-smart-on-save ()
+    "In case we forget, run clang-format-buffer-smart on save"
+    (add-hook 'before-save-hook 'clang-format-buffer-smart nil t)
+    )
+
+  (add-hook 'c++-mode-hook 'clang-format-buffer-smart-on-save)
 #+END_SRC
 
 ** Resize split windows : S-C-up/down/left/right
