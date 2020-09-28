@@ -380,6 +380,11 @@ If you can't remember the first part then you're all out of luck.
     :diminish
     :init
     (which-key-mode)
+    :hook
+    (
+     (c-mode . lsp)
+     (cpp-mode . lsp)
+     )
     )
 #+END_SRC
 
