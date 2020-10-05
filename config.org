@@ -212,7 +212,7 @@ It ain't broke so, for the moment, I ain't gonna fix it
   (use-package ccls
     :ensure t
     :config
-    ;;(setq ccls-executable "~/.local/bin/ccls")
+    (setq ccls-executable "~/home/ijc/git_repos/ccls/build/ccls")
     (setq lsp-prefer-flymake nil)
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
     :hook ((c-mode c++-mode objc-mode) .
