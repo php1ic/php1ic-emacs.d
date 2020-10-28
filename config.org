@@ -133,6 +133,12 @@ The default mode line is a bit compact, use this to spread it out.
     (setq sml/theme 'dark)
     (sml/setup)
     )
+
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1)
+    :custom ((doom-modeline-height 20))
+    )
 #+END_SRC
 
 ** Custom frame title
@@ -531,6 +537,23 @@ All formatting for multiple languages
 #+BEGIN_SRC emacs-lisp
   (use-package format-all
     :ensure t
+    )
+#+END_SRC
+
+** Ivy & Counsel
+Alter how M-x is run and give details for each command
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :ensure t
+    :init (ivy-rich-mode 1)
+    )
+
+  (use-package counsel
+    :ensure t
+    :bind (("M-x" . counsel-M-x)
+           ("C-x b" . counsel-ibuffer)
+           ("C-x C-f" . counsel-find-file)
+           )
     )
 #+END_SRC
 * Additional Modes
