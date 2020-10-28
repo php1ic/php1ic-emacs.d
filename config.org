@@ -222,17 +222,6 @@ It ain't broke so, for the moment, I ain't gonna fix it
     (push 'company-lsp company-backends) ;; add company-lsp as a backend
     (add-to-list 'company-lsp-filter-candidates '(digestif . nil))
     )
-
-  (use-package ccls
-    :ensure t
-    :config
-    (setq ccls-executable "~/home/ijc/git_repos/ccls/build/ccls")
-    (setq lsp-prefer-flymake nil)
-    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-    :hook ((c-mode c++-mode objc-mode) .
-           (lambda () (require 'ccls) (lsp))
-           )
-    )
 #+END_SRC
 
 ** C++ : Modern font lock
