@@ -196,18 +196,26 @@ It ain't broke so, for the moment, I ain't gonna fix it
 
   (use-package lsp-ui
     :ensure t
-    :commands lsp-ui-mode
+    ;;:commands lsp-ui-mode
+    :config
+    (setq lsp-ui-sideline-ignore-duplicate t)
+    (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+    )
+
+  (use-package lsp-ivy
+    :ensure t
+    :commands lsp-ivy-workspace-symbol
     )
 
   ;; company-lsp is no longer support - https://github.com/emacs-lsp/lsp-mode#overview
   ;; should be using company-capf, will investigate later
-  ;;(use-package company-lsp
-  ;;  :ensure t
-  ;;  :commands company-lsp
-  ;;  :config
-  ;;  (push 'company-lsp company-backends) ;; add company-lsp as a backend
-  ;;  (add-to-list 'company-lsp-filter-candidates '(digestif . nil))
-  ;;  )
+  (use-package company-lsp
+    :ensure t
+    :commands company-lsp
+    :config
+    (push 'company-lsp company-backends) ;; add company-lsp as a backend
+    (add-to-list 'company-lsp-filter-candidates '(digestif . nil))
+    )
 
   (use-package ccls
     :ensure t
