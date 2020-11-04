@@ -171,19 +171,18 @@ I'm having a mental block when it comes to auto-completion.
 I got this of the internet [[https://www.sandeepnambiar.com/setting-up-emacs-for-c++/]]
 It ain't broke so, for the moment, I ain't gonna fix it
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-      :ensure t
-      ;;:defer 2
-      :diminish
-      :custom
-      (company-begin-commands '(self-insert-command))
-      (company-idle-delay .1)
-      (company-minimum-prefix-length 1)
-      (company-show-numbers t)
-      (company-tooltip-align-annotations 't)
-      (global-company-mode t)
-      )
-
+  ;; (use-package company
+  ;;     :ensure t
+  ;;     ;;:defer 2
+  ;;     :diminish
+  ;;     :custom
+  ;;     (company-begin-commands '(self-insert-command))
+  ;;     (company-idle-delay .1)
+  ;;     (company-minimum-prefix-length 1)
+  ;;     (company-show-numbers t)
+  ;;     (company-tooltip-align-annotations 't)
+  ;;     (global-company-mode t)
+  ;;     )
 
   (use-package lsp-mode
     :ensure t
@@ -320,7 +319,7 @@ Incrementally highlight increasing amounts of scope.
 
 ** Multiple Cursors
 This package acts like an interactive macro.
-Select a region, call this pacakge to also select the next matching region in the buffer, repeat as required.
+Select a region, call this package to also select the next matching region in the buffer, repeat as required.
 You can now apply the necessary alteration to all instances of said region in the buffer as you have ... multiple cursors.
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
@@ -544,7 +543,25 @@ Alter how M-x is run and give details for each command
            ("C-x C-f" . counsel-find-file)
            )
     )
+
+  (use-package helpful
+    :ensure t
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-key] . helpful-key)
+    )
+
+  (use-package counsel-projectile
+    :ensure t
+    :config (counsel-projectile-mode)
+    )
 #+END_SRC
+
 * Additional Modes
 ** Ido
 Enable ido mode for better buffer opening.
