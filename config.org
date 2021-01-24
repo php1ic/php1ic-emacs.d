@@ -126,13 +126,13 @@ Set aspell as the checker and make sure it uses british english.
 ** Change the mode line
 The default mode line is a bit compact, use this to spread it out.
 #+BEGIN_SRC emacs-lisp
-  (use-package smart-mode-line
-    :ensure t
-    :config
-    (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'dark)
-    (sml/setup)
-    )
+  ;;(use-package smart-mode-line
+  ;;  :ensure t
+  ;;  :config
+  ;;  (setq sml/no-confirm-load-theme t)
+  ;;  (setq sml/theme 'dark)
+  ;;  (sml/setup)
+  ;;  )
 
   (use-package doom-modeline
     :ensure t
@@ -536,6 +536,20 @@ Alter how M-x is run and give details for each command
     :init (ivy-rich-mode 1)
     )
 
+   (use-package ivy-posframe
+     :ensure t
+     :after ivy
+     :config
+     (setq ivy-posframe-display-functions-alist
+           '((swiper          . ivy-posframe-display)
+             (complete-symbol . ivy-posframe-display)
+             (counsel-M-x     . ivy-posframe-display)
+             (t               . ivy-posframe-display)))
+     (set-face-attribute 'ivy-posframe nil :foreground "white" :background "Black")
+
+     (ivy-posframe-mode 1)
+     )
+
   (use-package counsel
     :ensure t
     :bind (("M-x" . counsel-M-x)
@@ -563,6 +577,15 @@ Alter how M-x is run and give details for each command
 #+END_SRC
 
 * Additional Modes
+** Python
+;;This is not installed by default
+;;#+BEGIN_SRC emacs-lisp
+;;  (use-package python-mode
+;;    :ensure t
+;;    :hook (python-mode . lsp-deferred)
+;;    )
+;;#+END_SRC
+
 ** Ido
 Enable ido mode for better buffer opening.
 #+BEGIN_SRC emacs-lisp
