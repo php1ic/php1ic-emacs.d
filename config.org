@@ -188,6 +188,8 @@ It ain't broke so, for the moment, I ain't gonna fix it
     :ensure t
     :init
     (setq lsp-keymap-prefix "s-z")
+    (setq lsp-pyls-plugins-pylint-enabled nil)
+    (setq-default lsp-pyls-configuration-sources ["flake8"])
     :hook (
            (lsp-mode . lsp-enable-which-key-integration)
            (python-mode . lsp)
@@ -228,6 +230,7 @@ Inbuild C++ mode doesn't recognise modern features
 #+BEGIN_SRC emacs-lisp
   (use-package modern-cpp-font-lock
     :ensure t
+    :after c++-mode
     :hook (c++-mode . modern-c++-font-lock-mode)
     )
 #+END_SRC
@@ -238,6 +241,7 @@ The org-bullets package is pure aesthetic.
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :ensure t
+    :defer t
     :init (setq org-log-done t)
     )
 
@@ -255,6 +259,7 @@ The org-bullets package is pure aesthetic.
 
   (use-package org-bullets
     :ensure t
+    :after org
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
     )
