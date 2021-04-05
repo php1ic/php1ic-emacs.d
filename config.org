@@ -55,8 +55,9 @@
   (setq next-line-add-newlines nil)
 
   ;; Show the battery charge level
-  ;; TODO: check if there is a battery before displaying it's charge level
-  (display-battery-mode 1)
+  (if (equal "Battery status not available"
+             (battery))
+      (display-battery-mode 1))
 #+END_SRC
 
 ** Dashboard
@@ -188,6 +189,7 @@ It ain't broke so, for the moment, I ain't gonna fix it
     :ensure t
     :init
     (setq lsp-keymap-prefix "s-z")
+    (setq lsp-clients-clangd-executable "/usr/bin/clangd")
     (setq lsp-pyls-plugins-pylint-enabled nil)
     (setq-default lsp-pyls-configuration-sources ["flake8"])
     :hook (
