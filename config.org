@@ -10,6 +10,13 @@
   ;;Use spaces for indenting, not tabs
   (setq-default indent-tabs-mode nil)
 
+  ;; Don't put package update files in the dashboard recent file list
+  (setq recentf-exclude '(
+                          ".*-autoloads\\.el\\'"
+                          )
+        )
+
+
   ;; searches case sensitive by default
   (setq case-fold-search nil)
 
@@ -190,8 +197,8 @@ It ain't broke so, for the moment, I ain't gonna fix it
     :init
     (setq lsp-keymap-prefix "s-z")
     (setq lsp-clients-clangd-executable "/usr/bin/clangd")
-    (setq lsp-pyls-plugins-pylint-enabled nil)
-    (setq-default lsp-pyls-configuration-sources ["flake8"])
+    ;; (setq lsp-pyls-plugins-pylint-enabled nil)
+    ;; (setq-default lsp-pyls-configuration-sources ["flake8"])
     :hook (
            (lsp-mode . lsp-enable-which-key-integration)
            (python-mode . lsp)
@@ -201,6 +208,13 @@ It ain't broke so, for the moment, I ain't gonna fix it
            (latex-mode . lsp)
            )
     :commands lsp
+    )
+
+  (use-package lsp-pyright
+    :ensure t
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp)))
     )
 
   (use-package lsp-ui
