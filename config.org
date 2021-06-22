@@ -179,18 +179,20 @@ I'm having a mental block when it comes to auto-completion.
 I got this of the internet [[https://www.sandeepnambiar.com/setting-up-emacs-for-c++/]]
 It ain't broke so, for the moment, I ain't gonna fix it
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package company
-  ;;     :ensure t
-  ;;     ;;:defer 2
-  ;;     :diminish
-  ;;     :custom
-  ;;     (company-begin-commands '(self-insert-command))
-  ;;     (company-idle-delay .1)
-  ;;     (company-minimum-prefix-length 1)
-  ;;     (company-show-numbers t)
-  ;;     (company-tooltip-align-annotations 't)
-  ;;     (global-company-mode t)
-  ;;     )
+   (use-package company
+       :ensure t
+       ;;:defer 2
+       :diminish
+       :config
+       (setq lsp-completion-provider :capf)
+       :custom
+       (company-begin-commands '(self-insert-command))
+       (company-idle-delay .1)
+       (company-minimum-prefix-length 1)
+       (company-show-numbers t)
+       (company-tooltip-align-annotations 't)
+       (global-company-mode t)
+       )
 
   (use-package lsp-mode
     :ensure t
@@ -232,13 +234,13 @@ It ain't broke so, for the moment, I ain't gonna fix it
 
   ;; company-lsp is no longer support - https://github.com/emacs-lsp/lsp-mode#overview
   ;; should be using company-capf, will investigate later
-  (use-package company-lsp
-    :ensure t
-    :commands company-lsp
-    :config
-    (push 'company-lsp company-backends) ;; add company-lsp as a backend
-    (add-to-list 'company-lsp-filter-candidates '(digestif . nil))
-    )
+  ;;(use-package company-lsp
+  ;;  :ensure t
+  ;;  :commands company-lsp
+  ;;  :config
+  ;;  (push 'company-lsp company-backends) ;; add company-lsp as a backend
+  ;;  (add-to-list 'company-lsp-filter-candidates '(digestif . nil))
+  ;;  )
 #+END_SRC
 
 ** C++ : Modern font lock
@@ -655,7 +657,7 @@ Ensure cmake mode and some addtional packages
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
     :ensure t
-    :hook (cmake-mode . company-mode)
+  ;;  :hook (cmake-mode . company-mode)
     )
 
   (use-package cmake-font-lock
