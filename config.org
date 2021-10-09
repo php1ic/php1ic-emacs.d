@@ -224,6 +224,8 @@ It ain't broke so, for the moment, I ain't gonna fix it
     ;;:commands lsp-ui-mode
     :config
     (setq lsp-ui-sideline-ignore-duplicate t)
+    ;; Default value is 100 which is a bit short for C++
+    (setq lsp-ui-sideline-diagnostic-max-line-length 150)
     (add-hook 'lsp-mode-hook 'lsp-ui-mode)
     )
 
@@ -252,6 +254,23 @@ Inbuild C++ mode doesn't recognise modern features
     :hook (c++-mode . modern-c++-font-lock-mode)
     )
 #+END_SRC
+
+;; ** Treesitter
+ Tree sitter is the new way of syntax highlighting, lets try it out
+ #+BEGIN_SRC emacs-lisp
+   (use-package tree-sitter-langs
+     :ensure t
+     )
+
+   (use-package tree-sitter
+     :ensure t
+     :config
+     (global-tree-sitter-mode)
+     ;;(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+     :hook
+     (tree-sitter-after-on . tree-sitter-hl-mode)
+     )
+ #+END_SRC
 
 ** Org
 Not sure if we need to install the org package, but lets do it anyway.
