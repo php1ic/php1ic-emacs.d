@@ -10,6 +10,17 @@
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
 
+;; Put custom settings in a separate file (which we ignore)
+(setq custom-file "~/.emacs.d/custom-settings.el")
+;; Check the custom file exists and create it if it doesn't
+;; I can't get `not` to work so use this hack
+(if (file-exists-p custom-file)
+    ()
+  (make-empty-file custom-file)
+  )
+(load custom-file)
+
+
 (defvar startup/file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
@@ -57,19 +68,3 @@
 ;;;  b) Remove linter warning
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "4cf9ed30ea575fb0ca3cff6ef34b1b87192965245776afa9e9e20c17d115f3fb" default))
- '(package-selected-packages
-   '(python-mode ivy-posframe helpful counsel-projectile doom-modeline counsel ivy-rich esup clang-format ripgrep rg gruvbox-theme cmake-font-lock cmake-mode format-all modern-cpp-font-lock all-the-icons all-the-icons-dired async beacon bind-key ccls company dash dash-functional dashboard epl expand-region f flx flycheck fringe-helper git-commit git-gutter+ gitlab-ci-mode gitlab-ci-mode-flycheck ht htmlize ido-completing-read+ ido-vertical-mode ivy lv markdown-mode memoize multiple-cursors org-bullets page-break-lines pkg-info projectile rainbow-delimiters rich-minority s solarized-theme spinner transient with-editor yaml-mode yasnippet flx-ido diminish switch-window which-key avy swiper git-gutter-fringe+ magit smart-mode-line company-lsp lsp-ui lsp-mode use-package))
- '(safe-local-variable-values '((magit-todos-exclude-globs "external/*"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
