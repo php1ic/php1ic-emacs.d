@@ -31,8 +31,6 @@
   (scroll-bar-mode -1)
 
   ;; Show line numbers
-  ;;(global-linum-mode 0)
-  ;; version 26 provided this built-in
   (global-display-line-numbers-mode)
 
   ;; Highlight current line
@@ -97,17 +95,6 @@ We are using the dashboard package so stop the default startup screen.
 ;;    )
 ;;#+END_SRC
 
-;;I like this theme, but the syntax highlighting for C++ has the same colour for type and variable name.
-;;Will check back once in a while for updates.
-;;#+BEGIN_SRC emacs-lisp
-;;  (use-package zerodark-theme
-;;    :ensure t
-;;    :config
-;;    (load-theme 'zerodark t nil)
-;;    (zerodark-setup-modeline-format)
-;;    )
-;;#+END_SRC
-
 Let's try gruvbox
 #+BEGIN_SRC emacs-lisp
   (use-package gruvbox-theme
@@ -118,10 +105,10 @@ Let's try gruvbox
 #+END_SRC
 
 ** ibuffer
-Better default buffer for open buffers.
-#+BEGIN_SRC emacs-lisp
-  (defalias 'list-buffers 'ibuffer)
-#+END_SRC
+;; Better default buffer for open buffers.
+;; #+BEGIN_SRC emacs-lisp
+;;   (defalias 'list-buffers 'ibuffer)
+;; #+END_SRC
 
 ** Spell checker and dictionary
 Set aspell as the checker and make sure it uses british english.
@@ -132,16 +119,8 @@ Set aspell as the checker and make sure it uses british english.
 #+END_SRC
 
 ** Change the mode line
-The default mode line is a bit compact, use this to spread it out.
+The default mode line is a bit compact, use the doom mode line to make it look nicer.
 #+BEGIN_SRC emacs-lisp
-  ;;(use-package smart-mode-line
-  ;;  :ensure t
-  ;;  :config
-  ;;  (setq sml/no-confirm-load-theme t)
-  ;;  (setq sml/theme 'dark)
-  ;;  (sml/setup)
-  ;;  )
-
   (use-package doom-modeline
     :ensure t
     :init (doom-modeline-mode 1)
@@ -166,33 +145,32 @@ Add the current file/buffer and project name to the title, if we are in a projec
 
 * Packages
 ** Config file profiler
-What takes so long to get started?
-#+BEGIN_SRC emacs-lisp
-  (use-package esup
-    :ensure t
-    :commands (esup)
-    )
-#+END_SRC
+;; What takes so long to get started?
+;; #+BEGIN_SRC emacs-lisp
+;;   (use-package esup
+;;     :ensure t
+;;     :commands (esup)
+;;     )
+;; #+END_SRC
 
 ** Auto Completion
 I'm having a mental block when it comes to auto-completion.
 I got this of the internet [[https://www.sandeepnambiar.com/setting-up-emacs-for-c++/]]
 It ain't broke so, for the moment, I ain't gonna fix it
 #+BEGIN_SRC emacs-lisp
-   (use-package company
-       :ensure t
-       ;;:defer 2
-       :diminish
-       :config
-       (setq lsp-completion-provider :capf)
-       :custom
-       (company-begin-commands '(self-insert-command))
-       (company-idle-delay .1)
-       (company-minimum-prefix-length 1)
-       (company-show-numbers t)
-       (company-tooltip-align-annotations 't)
-       (global-company-mode t)
-       )
+  (use-package company
+      :ensure t
+      :diminish
+      :config
+      (setq lsp-completion-provider :capf)
+      :custom
+      (company-begin-commands '(self-insert-command))
+      (company-idle-delay .1)
+      (company-minimum-prefix-length 1)
+      (company-show-numbers t)
+      (company-tooltip-align-annotations 't)
+      (global-company-mode t)
+      )
 
   (use-package lsp-mode
     :ensure t
@@ -229,10 +207,10 @@ It ain't broke so, for the moment, I ain't gonna fix it
     (add-hook 'lsp-mode-hook 'lsp-ui-mode)
     )
 
-  (use-package lsp-ivy
-    :ensure t
-    :commands lsp-ivy-workspace-symbol
-    )
+  ;; (use-package lsp-ivy
+  ;;   :ensure t
+  ;;   :commands lsp-ivy-workspace-symbol
+  ;;   )
 
   ;; company-lsp is no longer support - https://github.com/emacs-lsp/lsp-mode#overview
   ;; should be using company-capf, will investigate later
@@ -255,7 +233,7 @@ Inbuild C++ mode doesn't recognise modern features
     )
 #+END_SRC
 
-;; ** Treesitter
+** Treesitter
  Tree sitter is the new way of syntax highlighting, lets try it out
  #+BEGIN_SRC emacs-lisp
    (use-package tree-sitter-langs
@@ -299,15 +277,6 @@ The org-bullets package is pure aesthetic.
     :after org
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
-    )
-#+END_SRC
-
-** Syntax highlighting for documents exported to HTML
-One day I'll start writing talks/presentations in emacs and org-mode.
-This package will make them look nice when exported to html.
-#+BEGIN_SRC emacs-lisp
-  (use-package htmlize
-    :ensure t
     )
 #+END_SRC
 
@@ -573,51 +542,138 @@ All formatting for multiple languages
 ** Ivy & Counsel
 Alter how M-x is run and give details for each command
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy-rich
-    :ensure t
-    :init (ivy-rich-mode 1)
-    )
+  ;; (use-package ivy-rich
+  ;;   :ensure t
+  ;;   :init (ivy-rich-mode 1)
+  ;;   )
+  ;;
+  ;;  (use-package ivy-posframe
+  ;;    :ensure t
+  ;;    :after ivy
+  ;;    :config
+  ;;    (setq ivy-posframe-display-functions-alist
+  ;;          '((swiper          . ivy-posframe-display)
+  ;;            (complete-symbol . ivy-posframe-display)
+  ;;            (counsel-M-x     . ivy-posframe-display)
+  ;;            (t               . ivy-posframe-display)))
+  ;;    (set-face-attribute 'ivy-posframe nil :foreground "white" :background "Black")
+  ;;
+  ;;    (ivy-posframe-mode 1)
+  ;;    )
+  ;;
+  ;; (use-package counsel
+  ;;   :ensure t
+  ;;   :bind (("M-x" . counsel-M-x)
+  ;;          ("C-x b" . counsel-ibuffer)
+  ;;          ("C-x C-f" . counsel-find-file)
+  ;;          )
+  ;;   )
+  ;;
+  ;; (use-package helpful
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (counsel-describe-function-function #'helpful-callable)
+  ;;   (counsel-describe-variable-function #'helpful-variable)
+  ;;   :bind
+  ;;   ([remap describe-function] . counsel-describe-function)
+  ;;   ([remap describe-command] . helpful-command)
+  ;;   ([remap describe-variable] . counsel-describe-variable)
+  ;;   ([remap describe-key] . helpful-key)
+  ;;   )
+  ;;
+  ;; (use-package counsel-projectile
+  ;;   :ensure t
+  ;;   :config (counsel-projectile-mode)
+  ;;   )
+#+END_SRC
 
-   (use-package ivy-posframe
-     :ensure t
-     :after ivy
-     :config
-     (setq ivy-posframe-display-functions-alist
-           '((swiper          . ivy-posframe-display)
-             (complete-symbol . ivy-posframe-display)
-             (counsel-M-x     . ivy-posframe-display)
-             (t               . ivy-posframe-display)))
-     (set-face-attribute 'ivy-posframe nil :foreground "white" :background "Black")
-
-     (ivy-posframe-mode 1)
-     )
-
-  (use-package counsel
-    :ensure t
-    :bind (("M-x" . counsel-M-x)
-           ("C-x b" . counsel-ibuffer)
-           ("C-x C-f" . counsel-find-file)
-           )
-    )
-
+** Helpful
+#+BEGIN_SRC emacs-lisp
   (use-package helpful
     :ensure t
     :custom
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
     :bind
-    ([remap describe-function] . counsel-describe-function)
     ([remap describe-command] . helpful-command)
-    ([remap describe-variable] . counsel-describe-variable)
     ([remap describe-key] . helpful-key)
-    )
-
-  (use-package counsel-projectile
-    :ensure t
-    :config (counsel-projectile-mode)
+    ;; ([remap describe-function] . counsel-describe-function)
+    ;; ([remap describe-variable] . counsel-describe-variable)
     )
 #+END_SRC
 
+** Vertico
+#+BEGIN_SRC emacs-lisp
+  (use-package vertico
+    :ensure t
+    :init
+    (vertico-mode)
+    )
+#+END_SRC
+
+** Orderless
+#+BEGIN_SRC emacs-lisp
+  (use-package orderless
+    :ensure t
+    :init
+    (setq completion-styles '(orderless)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion)))
+          )
+    )
+#+END_SRC
+
+** Marginalia
+#+BEGIN_SRC emacs-lisp
+  (use-package marginalia
+    :ensure t
+    :init
+    (marginalia-mode)
+    )
+#+END_SRC
+
+** Consult
+#+BEGIN_SRC emacs-lisp
+  (use-package consult
+    :ensure t
+    :bind (
+           ("C-x b" . consult-buffer)
+           )
+    )
+#+END_SRC
+
+** Embark
+#+BEGIN_SRC emacs-lisp
+  (use-package embark
+    :ensure t
+    :bind
+    (("C-." . embark-act)         ;; pick some comfortable binding
+     ("C-;" . embark-dwim)        ;; good alternative: M-.
+     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+    :init
+    ;; Optionally replace the key help with a completing-read interface
+    (setq prefix-help-command #'embark-prefix-help-command)
+    :config
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))
+                 )
+    )
+
+  ;; Consult users will also want the embark-consult package.
+  (use-package embark-consult
+    :ensure t
+    :after
+    (embark consult)
+    :demand t ; only necessary if you have the hook below
+    ;; if you want to have consult previews as you move around an
+    ;; auto-updating embark collect buffer
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode)
+    )
+#+END_SRC
 * Additional Modes
 ** Python
 ;;This is not installed by default
@@ -629,32 +685,32 @@ Alter how M-x is run and give details for each command
 ;;#+END_SRC
 
 ** Ido
-Enable ido mode for better buffer opening.
-#+BEGIN_SRC emacs-lisp
-  (use-package flx-ido
-    :ensure t
-    :init
-    (flx-ido-mode 1)
-    )
-
-  (ido-mode 1)
-  (ido-everywhere 1)
-  (setq ido-enable-flex-matching t)
-  (setq ido-use-faces nil)
-  (setq ido-create-new-buffer 'always)
-
-  (use-package ido-vertical-mode
-    :ensure t
-    :config
-    (ido-vertical-mode)
-    )
-
-  (use-package ido-completing-read+
-    :ensure t
-    :config
-    (ido-ubiquitous-mode)
-    )
-#+END_SRC
+;; Enable ido mode for better buffer opening.
+;; #+BEGIN_SRC emacs-lisp
+;;   (use-package flx-ido
+;;     :ensure t
+;;     :init
+;;     (flx-ido-mode 1)
+;;     )
+;;
+;;   (ido-mode 1)
+;;   (ido-everywhere 1)
+;;   (setq ido-enable-flex-matching t)
+;;   (setq ido-use-faces nil)
+;;   (setq ido-create-new-buffer 'always)
+;;
+;;   (use-package ido-vertical-mode
+;;     :ensure t
+;;     :config
+;;     (ido-vertical-mode)
+;;     )
+;;
+;;   (use-package ido-completing-read+
+;;     :ensure t
+;;     :config
+;;     (ido-ubiquitous-mode)
+;;     )
+;; #+END_SRC
 
 ** Gitlab-CI
 Additional syntax highlighting for .gitlab-ci.yml files
@@ -676,7 +732,6 @@ Ensure cmake mode and some addtional packages
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
     :ensure t
-  ;;  :hook (cmake-mode . company-mode)
     )
 
   (use-package cmake-font-lock
@@ -684,22 +739,23 @@ Ensure cmake mode and some addtional packages
     :hook (cmake-mode . cmake-font-lock-activate)
     )
 #+END_SRC
+
 ** Yaml
-Wasn't installed by default.
-#+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :ensure t
-    )
-#+END_SRC
+;;Wasn't installed by default.
+;;#+BEGIN_SRC emacs-lisp
+;;  (use-package yaml-mode
+;;    :ensure t
+;;    )
+;;#+END_SRC
 
 ** Markdown
-Wasn't installed by default.
-#+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
-      :ensure t
-      :mode ("\\.md" . markdown-mode)
-      )
-#+END_SRC
+;;Wasn't installed by default.
+;;#+BEGIN_SRC emacs-lisp
+;;  (use-package markdown-mode
+;;      :ensure t
+;;      :mode ("\\.md" . markdown-mode)
+;;      )
+;;#+END_SRC
 
 ** Modes for specific file extensions
 Creating combined tex/eps figures with xfig outputs files with non-standard extensions.
