@@ -63,6 +63,9 @@
   (if (equal "Battery status not available"
              (battery))
       (display-battery-mode 1))
+
+  ;; Start maximised
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 #+END_SRC
 
 ** Dashboard
