@@ -16,7 +16,6 @@
                           )
         )
 
-
   ;; searches case sensitive by default
   (setq case-fold-search nil)
 
@@ -106,12 +105,6 @@ Let's try gruvbox
     (load-theme 'gruvbox-dark-medium t)
     )
 #+END_SRC
-
-** ibuffer
-;; Better default buffer for open buffers.
-;; #+BEGIN_SRC emacs-lisp
-;;   (defalias 'list-buffers 'ibuffer)
-;; #+END_SRC
 
 ** Spell checker and dictionary
 Set aspell as the checker and make sure it uses british english.
@@ -677,6 +670,7 @@ Alter how M-x is run and give details for each command
     (embark-collect-mode . consult-preview-at-point-mode)
     )
 #+END_SRC
+
 * Additional Modes
 ** Python
 ;;This is not installed by default
