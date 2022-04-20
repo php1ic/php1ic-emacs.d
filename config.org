@@ -1,8 +1,12 @@
 * Appearance
 ** General Settings
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "DejaVu Sans Mono 7")
+  ;;(set-default-font "DejaVu Sans Mono 7")
   ;;(set-frame-font "Inconsolata-7")
+  (set-face-attribute 'default nil
+                      :font "DejaVu Sans Mono"
+                      :weight 'light
+                      :height 70)
 
   ;; Don't change the font for sub/superscript in latex
   (eval-after-load "tex-mode" '(fset 'tex-font-lock-suscript 'ignore))
@@ -119,7 +123,7 @@ The default mode line is a bit compact, use the doom mode line to make it look n
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
     :ensure t
-    :init (doom-modeline-mode 1)
+    :hook (after-init . doom-modeline-mode)
     :custom ((doom-modeline-height 20))
     )
 #+END_SRC
