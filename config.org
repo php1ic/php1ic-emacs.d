@@ -35,6 +35,7 @@
 
   ;; Show line numbers
   (global-display-line-numbers-mode)
+  (setq display-line-numbers-type 'relative)
 
   ;; Highlight current line
   (global-hl-line-mode 1)
