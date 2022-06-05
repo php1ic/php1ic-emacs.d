@@ -690,6 +690,16 @@ Alter how M-x is run and give details for each command
     )
 #+END_SRC
 
+** Smart Parenetheses
+I don't always seem to get on with smart parentheses modes, but lets give it another try
+#+BEGIN_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :hook
+    (prog-mode . smartparens-mode)
+    )
+#+END_SRC
+
 * Additional Modes
 ** Python
 ;;This is not installed by default
