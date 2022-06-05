@@ -17,3 +17,4 @@ irony
 transient
 .python-environments
 elpy
+eln-cache
