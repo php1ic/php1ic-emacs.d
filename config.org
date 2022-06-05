@@ -107,12 +107,21 @@ We are using the dashboard package so stop the default startup screen.
 ;;    )
 ;;#+END_SRC
 
-Let's try gruvbox
+;; Let's try gruvbox
+;; #+BEGIN_SRC emacs-lisp
+;;   (use-package gruvbox-theme
+;;     :ensure t
+;;     :config
+;;     (load-theme 'gruvbox-dark-medium t)
+;;     )
+;; #+END_SRC
+
+Now Oceanic Next
 #+BEGIN_SRC emacs-lisp
-  (use-package gruvbox-theme
+  (use-package oceanic-theme
     :ensure t
     :config
-    (load-theme 'gruvbox-dark-medium t)
+    (load-theme 'oceanic t)
     )
 #+END_SRC
 
