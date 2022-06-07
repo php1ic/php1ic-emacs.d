@@ -201,6 +201,7 @@ It ain't broke so, for the moment, I ain't gonna fix it
            (c++-mode . lsp)
            (sh-mode . lsp)
            (latex-mode . lsp)
+           (rust-mode . lsp)
            )
     :commands lsp
     )
@@ -797,6 +798,29 @@ Clang-format files are yaml.
                   )
                 auto-mode-alist)
         )
+#+END_SRC
+
+** Rust
+Additional rust related modes and functionality
+#+BEGIN_SRC emacs-lisp
+  (use-package toml-mode
+    :ensure t
+    )
+
+  (use-package rust-mode
+    :ensure t
+    :hook (rust-mode . lsp)
+    )
+
+  (use-package cargo
+    :ensure t
+    :hook (rust-mode . cargo-minor-mode)
+    )
+
+  (use-package flycheck-rust
+    :ensure t
+    :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+    )
 #+END_SRC
 
 * Functions & Custom shortcuts
