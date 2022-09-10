@@ -211,6 +211,8 @@ It ain't broke so, for the moment, I ain't gonna fix it
     :hook (python-mode . (lambda ()
                            (require 'lsp-pyright)
                            (lsp)))
+    :config
+    (setq lsp-pylsp-plugins-pyflakes-enabled t)
     )
 
   (use-package lsp-ui
