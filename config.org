@@ -523,12 +523,18 @@ Highlight the parts of a line that breach a set character limit.
     )
 #+END_SRC
 
-Delete trailing whitespace on save, except markdown mode when they represent something
+Don't delete all trailing whitespace in a file, it lands you in it with git blame.
+Only delete for the lines you have edited.
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'before-save-hook '(lambda()
-                                 (when (not (or (derived-mode-p 'markdown-mode)))
-                                   (delete-trailing-whitespace)))
-            )
+  ;; (add-hook 'before-save-hook '(lambda()
+  ;;                                (when (not (or (derived-mode-p 'markdown-mode)))
+  ;;                                  (delete-trailing-whitespace)))
+  ;;           )
+  (use-package ws-butler
+    :ensure t
+    :hook
+    (prog-mode . ws-butler-mode)
+    )
 #+END_SRC
 
 ** All the icons
