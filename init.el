@@ -10,8 +10,12 @@
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
 
+;; Where do the config files live
+;; TODO: Check for XDG_CONFIG_HOME and use if set
+(setq config_path (concat (getenv "HOME") "/.config/emacs/"))
+
 ;; Put custom settings in a separate file (which we ignore)
-(setq custom-file "~/.emacs.d/custom-settings.el")
+(setq custom-file (concat config_path "custom-settings.el"))
 ;; Check the custom file exists and create it if it doesn't
 ;; I can't get `not` to work so use this hack
 (if (file-exists-p custom-file)
@@ -59,8 +63,8 @@
   )
 
 ;;; This is the actual config file. It is omitted if it doesn't exist so emacs won't refuse to launch.
-( when (file-readable-p "~/.emacs.d/config.org")
-  (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
+( when (file-readable-p (concat config_path "config.org"))
+  (org-babel-load-file (expand-file-name (concat config_path "config.org")))
   )
 
 ;;; Add these lines to
