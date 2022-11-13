@@ -29,9 +29,12 @@
   ;; Column numbers in mode line
   (column-number-mode t)
 
-  ;; Remove toolbar
+  ;; Remove any and all window borders so the frame really is full screen
+  (setq default-frame-alist '((undecorated . t)))
+  ;; Disbale things you generally use a mouse to interact with
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+  (menu-bar-mode -1)
 
   ;; Show line numbers
   (global-display-line-numbers-mode)
@@ -141,21 +144,6 @@ The default mode line is a bit compact, use the doom mode line to make it look n
     :hook (after-init . doom-modeline-mode)
     :custom ((doom-modeline-height 20))
     )
-#+END_SRC
-
-** Custom frame title
-Add the current file/buffer and project name to the title, if we are in a project.
-#+BEGIN_SRC emacs-lisp
-  (setq frame-title-format
-        '((:eval
-           (let ((project-name (projectile-project-name)))
-             (unless (string= "-" project-name)
-               (format "[%s] " project-name))
-             )
-           )
-          "%b"
-          )
-        )
 #+END_SRC
 
 * Packages
